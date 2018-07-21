@@ -15,6 +15,14 @@ module.exports = {
           { loader: 'ts-loader', options: { transpileOnly: true } },
         ],
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /.jpe?g$|.gif$|.png$|.svg$|.woff$|.woff2$|.ttf$|.eot$/,
+        use: 'url-loader'
+      }
     ],
   },  
   resolve: {

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 
-import { Provider as MobxProvider } from 'mobx-react';
 import createBrowserHistory from 'history/createBrowserHistory';
+import { Provider as MobxProvider } from 'mobx-react';
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router';
 import { RouteComponentProps, Router } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css';
 
 import App from './App';
 
