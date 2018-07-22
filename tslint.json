@@ -9,8 +9,6 @@
       true,
       "ignore-same-line"
     ],
-    "no-unused-expression": false,
-    "no-string-literal": false,
     "quotemark": [
       true,
       "single"
@@ -18,6 +16,7 @@
     "semicolon": [
       true,
       "always"
-    ]
+    ],
+    "jsx-boolean-value": false,
   }
 }
