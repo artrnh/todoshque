@@ -16,6 +16,10 @@ const Container = styled.div`
   margin: 0 auto;
   width: 40%;
   padding: 20px;
+
+  ${media.desktop`width: 60%;`}
+  ${media.tablet`width: 70%;`}
+  ${media.phone`width: 100%;`}
 `;
 
 export default Layout;
