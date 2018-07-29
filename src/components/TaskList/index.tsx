@@ -1,17 +1,37 @@
 import * as React from 'react';
+
+import { inject, observer } from 'mobx-react';
 import { Card } from 'semantic-ui-react';
 
+import { ITaskStore } from '../../stores/TaskStore';
 import AddTask from './AddTask';
+import TaskCard from './TaskCard';
 
-const TaskList = () => (
-  <>
-    <AddTask />
-    <Card.Group>
-      <Card fluid color='red' header='Option 1' />
-      <Card fluid color='orange' header='Option 2' />
-      <Card fluid color='yellow' header='Option 3' />
-    </Card.Group>
-  </>
-);
+export interface IProps {
+  tasks?: ITaskStore;
+}
+
+@inject('tasks')
+@observer
+class TaskList extends React.Component<IProps> {
+  public render() {
+    return (
+      <>
+        <AddTask />
+        <Card.Group>
+          {this.renderTasks()}
+        </Card.Group>
+      </>
+    );
+  }
+
+  private renderTasks() {
+    return this.props.tasks.items.map((task) => (
+      <TaskCard
+        title={task.title}
+      />
+    ));
+  }
+}
 
 export default TaskList;

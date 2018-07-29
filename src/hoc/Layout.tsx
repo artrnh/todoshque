@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled from '../styled';
 
+import styled from '../styled';
 import media from '../utils/media';
 
 const Layout: React.SFC = (props) => (

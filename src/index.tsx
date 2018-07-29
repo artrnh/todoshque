@@ -5,8 +5,7 @@ import { Provider } from 'mobx-react';
 import 'semantic-ui-css/semantic.min.css';
 
 import App from './App';
-
-const stores = {};
+import stores from './stores';
 
 render(
   <Provider {...stores}>
