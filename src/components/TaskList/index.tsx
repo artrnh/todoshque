@@ -28,6 +28,7 @@ class TaskList extends React.Component<IProps> {
   private renderTasks() {
     return this.props.tasks.items.map((task) => (
       <TaskCard
+        key={task.id}
         title={task.title}
       />
     ));
