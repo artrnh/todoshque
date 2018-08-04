@@ -31,7 +31,10 @@ class TaskList extends React.Component<IProps> {
         key={task.id}
         id={task.id}
         title={task.title}
+        description={task.description}
         createdAt={task.createdAt}
+        completed={task.completed}
+        completedAt={task.completedAt}
       />
     ));
   }

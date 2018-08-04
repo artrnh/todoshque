@@ -11,7 +11,8 @@ export interface ITask {
   title: string;
   description: string;
   createdAt: moment.Moment;
-  updatedAt: moment.Moment;
+  completed: boolean;
+  completedAt: moment.Moment;
 }
 
 export interface ITaskStore {
@@ -19,6 +20,7 @@ export interface ITaskStore {
 
   addTask(fields: IAddTaskFormFields): void;
   deleteTask(id: number): void;
+  completeTask(id: number): void;
 }
 
 class TaskStore implements ITaskStore {
@@ -33,14 +35,22 @@ class TaskStore implements ITaskStore {
       title: fields.addTask.trim(),
       description: '',
       createdAt: moment(),
-      updatedAt: moment(),
+      completed: false,
+      completedAt: null,
     });
   }
 
   @action.bound
   public deleteTask(id: number) {
-    const deletedTaskIndex = this.items.findIndex((item) => item.id === id);
+    const deletedTaskIndex = this.items.findIndex((task) => task.id === id);
     this.items.splice(deletedTaskIndex, 1);
+  }
+
+  @action.bound
+  public completeTask(id: number) {
+    const selectedTask = this.items.find((task) => task.id === id);
+    selectedTask.completed = !selectedTask.completed;
+    selectedTask.completedAt = moment();
   }
 }
 
