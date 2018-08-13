@@ -9,7 +9,7 @@ import { ITaskStore } from '../../../stores/TaskStore';
 import styled from '../../../styled';
 
 export interface IProps {
-  id: number;
+  id: string;
   title: string;
   description?: string;
   createdAt: moment.Moment;
@@ -21,7 +21,7 @@ export interface IProps {
 @inject('tasks')
 class TaskCard extends React.Component<IProps> {
   public render() {
-    const { completed, title, description } = this.props;
+    const { completed, title } = this.props;
 
     return (
       <Card fluid>

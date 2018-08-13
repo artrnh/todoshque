@@ -1,13 +1,14 @@
-import { uniqueId } from 'lodash';
 import { action, observable } from 'mobx';
 import * as moment from 'moment';
+
+import firebase from '../utils/firebase';
 
 export interface IAddTaskFormFields {
   addTask: string;
 }
 
 export interface ITask {
-  id: number;
+  id: string;
   title: string;
   description: string;
   createdAt: moment.Moment;
@@ -18,39 +19,66 @@ export interface ITask {
 export interface ITaskStore {
   items: ITask[];
 
+  loadItems(): void;
+  updateItems(newItems: ITask[]): void;
   addTask(fields: IAddTaskFormFields): void;
-  deleteTask(id: number): void;
-  completeTask(id: number): void;
+  deleteTask(id: string): void;
+  completeTask(id: string): void;
 }
 
 class TaskStore implements ITaskStore {
   @observable public items: ITask[] = [];
+  private dbRef: firebase.database.Reference = firebase.database().ref();
 
   @action.bound
-  public addTask(fields: IAddTaskFormFields) {
+  public loadItems() {
+    this.dbRef.child('items').on('value', (snapshot) => {
+      const items = snapshot.val() || [];
+
+      this.updateItems(
+        Object.entries(items).map(([key, task]: [string, ITask]) => ({
+          ...task,
+          id: key,
+          createdAt: moment(task.createdAt),
+          completedAt: moment(task.completedAt),
+        })),
+      );
+    });
+  }
+
+  @action.bound
+  public updateItems(newItems: ITask[]) {
+    this.items = newItems;
+  }
+
+  @action.bound
+  public async addTask(fields: IAddTaskFormFields) {
     if (!fields.addTask.trim()) return;
 
-    this.items.push({
-      id: Number(uniqueId()),
+    await this.dbRef.child('items').push({
       title: fields.addTask.trim(),
       description: '',
-      createdAt: moment(),
+      createdAt: moment().toJSON(),
       completed: false,
       completedAt: null,
     });
   }
 
   @action.bound
-  public deleteTask(id: number) {
-    const deletedTaskIndex = this.items.findIndex((task) => task.id === id);
-    this.items.splice(deletedTaskIndex, 1);
+  public async deleteTask(id: string) {
+    await this.dbRef.child(`items/${id}`).remove();
   }
 
   @action.bound
-  public completeTask(id: number) {
+  public async completeTask(id: string) {
     const selectedTask = this.items.find((task) => task.id === id);
-    selectedTask.completed = !selectedTask.completed;
-    selectedTask.completedAt = moment();
+
+    await this.dbRef.child(`items/${id}`).set({
+      ...selectedTask,
+      completed: !selectedTask.completed,
+      createdAt: selectedTask.createdAt.toJSON(),
+      completedAt: moment().toJSON(),
+    });
   }
 }
 

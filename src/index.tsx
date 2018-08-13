@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 
 import { Provider } from 'mobx-react';
 import 'semantic-ui-css/semantic.min.css';
+import './utils/firebase';
 
 import App from './App';
 import stores from './stores';

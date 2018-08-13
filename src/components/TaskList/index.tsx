@@ -14,6 +14,10 @@ export interface IProps {
 @inject('tasks')
 @observer
 class TaskList extends React.Component<IProps> {
+  public componentDidMount() {
+    this.props.tasks.loadItems();
+  }
+
   public render() {
     return (
       <>
