@@ -79,7 +79,7 @@ class TaskCard extends React.Component<IProps> {
 
   private deleteTask = (): void => this.props.tasks.deleteTask(this.props.id);
 
-  private completeTask = (): void => this.props.tasks.completeTask(this.props.id);
+  private completeTask = (): void => this.props.tasks.toggleTask(this.props.id);
 
   private renderMoment = (): React.ReactNode => {
     const { completed, completedAt, createdAt } = this.props;

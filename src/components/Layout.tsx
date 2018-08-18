@@ -3,11 +3,11 @@ import * as React from 'react';
 import styled from '../styled';
 import media from '../utils/media';
 
-const Layout: React.SFC = (props) => (
-  <Container>
-    {props.children}
-  </Container>
-);
+export interface IProps {
+  render(): React.ReactNode;
+}
+
+const Layout: React.SFC<IProps> = (props) => <Container>{props.render()}</Container>;
 
 const Container = styled.div`
   display: flex;

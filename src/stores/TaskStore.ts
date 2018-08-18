@@ -26,7 +26,7 @@ export interface ITaskStore {
   updateItems(newItems: ITask[]): void;
   addTask(fields: IAddTaskFormFields): void;
   deleteTask(id: string): void;
-  completeTask(id: string): void;
+  toggleTask(id: string): void;
 }
 
 class TaskStore implements ITaskStore {
@@ -88,7 +88,7 @@ class TaskStore implements ITaskStore {
   }
 
   @action.bound
-  public async completeTask(id: string) {
+  public async toggleTask(id: string) {
     const selectedTask = this.items.find((task) => task.id === id);
 
     await this.dbRef.child(`items/${id}`).set({

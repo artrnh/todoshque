@@ -38,7 +38,7 @@ class Filters extends React.Component<IProps> {
     );
   }
 
-  private applyFilter = (filter: string) => (e): void => this.props.tasks.applyFilter(filter);
+  private applyFilter = (filter: string) => (e: React.MouseEvent): void => this.props.tasks.applyFilter(filter);
   private isFilterActive = (filter: string) => this.props.tasks.activeFilter === filter;
 }
 
