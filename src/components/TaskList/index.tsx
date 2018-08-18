@@ -5,6 +5,7 @@ import { Card } from 'semantic-ui-react';
 
 import { ITaskStore } from '../../stores/TaskStore';
 import AddTask from './AddTask';
+import Filters from './Filters';
 import TaskCard from './TaskCard';
 
 export interface IProps {
@@ -22,6 +23,7 @@ class TaskList extends React.Component<IProps> {
     return (
       <>
         <AddTask />
+        <Filters />
         <Card.Group>
           {this.renderTasks()}
         </Card.Group>
@@ -30,7 +32,7 @@ class TaskList extends React.Component<IProps> {
   }
 
   private renderTasks = (): React.ReactNode[] => {
-    return this.props.tasks.items.map((task) => (
+    return this.props.tasks.filteredItems.map((task) => (
       <TaskCard
         key={task.id}
         id={task.id}

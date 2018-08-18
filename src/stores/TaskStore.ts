@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import * as moment from 'moment';
 
 import firebase from '../utils/firebase';
@@ -18,7 +18,10 @@ export interface ITask {
 
 export interface ITaskStore {
   items: ITask[];
+  filteredItems: ITask[];
+  activeFilter: string;
 
+  applyFilter(filter: string): void;
   loadItems(): void;
   updateItems(newItems: ITask[]): void;
   addTask(fields: IAddTaskFormFields): void;
@@ -28,7 +31,22 @@ export interface ITaskStore {
 
 class TaskStore implements ITaskStore {
   @observable public items: ITask[] = [];
+  @observable public activeFilter: string = 'all';
   private dbRef: firebase.database.Reference = firebase.database().ref();
+
+  @computed
+  get filteredItems() {
+    switch (this.activeFilter) {
+      case 'active': return this.items.filter((task) => !task.completed);
+      case 'completed': return this.items.filter((task) => task.completed);
+      default: return this.items;
+    }
+  }
+
+  @action.bound
+  public applyFilter(filter: string) {
+    this.activeFilter = filter;
+  }
 
   @action.bound
   public loadItems() {
@@ -53,7 +71,7 @@ class TaskStore implements ITaskStore {
 
   @action.bound
   public async addTask(fields: IAddTaskFormFields) {
-    if (!fields.addTask.trim()) return;
+    if (!fields.addTask || !fields.addTask.trim()) return;
 
     await this.dbRef.child('items').push({
       title: fields.addTask.trim(),
