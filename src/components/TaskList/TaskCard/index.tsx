@@ -21,100 +21,130 @@ export interface IProps {
 @inject('tasks')
 class TaskCard extends React.Component<IProps> {
   public render() {
-    const { completed, title } = this.props;
+    return (this.renderCard());
+  }
 
-    return (
-      <Card fluid>
-        <Content>
-          <Header>
+  private renderCard = (): React.ReactNode => {
+    const { completed, description, title, completedAt, createdAt } = this.props;
 
-            <Button
-              onClick={this.completeTask}
-              floated='left'
-              icon
-              compact
-              circular
-              color={completed ? null : 'green'}
-            >
-              <Icon name='check' color={completed ? 'green' : null} />
-            </Button>
+    if (completed) {
+      return (
+        <Card fluid>
+          <Content>
+            <Header>
 
-            <TaskTitle completed={completed}>
-              {title}
-            </TaskTitle>
+              <Button
+                onClick={this.completeTask}
+                floated='left'
+                icon
+                compact
+                circular
+              >
+                <Icon name='check' color='green' />
+              </Button>
 
-            <Button
-              onClick={this.deleteTask}
-              floated='right'
-              color='red'
-              icon
-              compact
-              circular
-            >
-              <Icon name='trash' />
-            </Button>
+              <TaskTitle completed>
+                {title}
+              </TaskTitle>
 
-            <Button
-              floated='right'
-              color='green'
-              icon
-              compact
-              circular
-              disabled={completed}
-            >
-              <Icon name='pencil' />
-            </Button>
+              <Button
+                onClick={this.deleteTask}
+                floated='right'
+                color='red'
+                icon
+                compact
+                circular
+              >
+                <Icon name='trash' />
+              </Button>
 
-            {completed && <Label color='green' attached='bottom'>Completed</Label>}
+              <Button
+                floated='right'
+                color='green'
+                icon
+                compact
+                circular
+                disabled
+              >
+                <Icon name='pencil' />
+              </Button>
 
-          </Header>
+            </Header>
 
-          {this.renderMoment()}
-          {this.renderDescription()}
+            <Moment>
+              Completed {completedAt.fromNow()}
+            </Moment>
 
-        </Content>
-      </Card>
-    );
+            {description && <CompletedDescription>{description}</CompletedDescription>}
+
+            <Label color='green' attached='bottom'>Completed</Label>
+
+          </Content>
+        </Card>
+      );
+    } else {
+      return (
+        <Card fluid>
+          <Content>
+            <Header>
+
+              <Button
+                onClick={this.completeTask}
+                floated='left'
+                icon
+                compact
+                circular
+                color='green'
+              >
+                <Icon name='check' />
+              </Button>
+
+              <TaskTitle>
+                {title}
+              </TaskTitle>
+
+              <Button
+                onClick={this.deleteTask}
+                floated='right'
+                color='red'
+                icon
+                compact
+                circular
+              >
+                <Icon name='trash' />
+              </Button>
+
+              <Button
+                floated='right'
+                color='green'
+                icon
+                compact
+                circular
+              >
+                <Icon name='pencil' />
+              </Button>
+
+            </Header>
+
+            <Moment>
+              Created {createdAt.fromNow()}
+            </Moment>
+
+            {description && <Description>{description}</Description>}
+
+          </Content>
+        </Card>
+      );
+    }
   }
 
   private deleteTask = (): void => this.props.tasks.deleteTask(this.props.id);
 
   private completeTask = (): void => this.props.tasks.toggleTask(this.props.id);
-
-  private renderMoment = (): React.ReactNode => {
-    const { completed, completedAt, createdAt } = this.props;
-
-    const word = completed ? 'Completed' : 'Created';
-    const fromNow = completed ? completedAt.fromNow() : createdAt.fromNow();
-
-    return (
-      <Moment>
-        {`${word} ${fromNow}`}
-      </Moment>
-    );
-  }
-
-  private renderDescription = (): React.ReactNode => {
-    const { completed, description } = this.props;
-
-    if (!description) return null;
-
-    const style = {
-      color: completed && 'grey',
-      textDecoration: completed && 'line-through',
-      textDecorationColor: 'green',
-    };
-
-    return (
-      <Description style={style}>
-        {description}
-      </Description>
-    );
-  }
 }
 
 interface ITaskTitle {
-  completed: boolean;
+  completed?: boolean;
 }
 
 const TaskTitle = styled.h3<ITaskTitle>`
@@ -127,6 +157,12 @@ const TaskTitle = styled.h3<ITaskTitle>`
 
 const Moment = styled(Meta)`
   margin-left: 45px;
+`;
+
+const CompletedDescription = styled(Description)`
+  color: grey !important;
+  text-decoration: line-through;
+  text-decoration-color: green;
 `;
 
 export default TaskCard;

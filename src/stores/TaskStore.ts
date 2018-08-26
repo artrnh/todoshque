@@ -20,6 +20,7 @@ export interface ITaskStore {
   items: ITask[];
   filteredItems: ITask[];
   activeFilter: string;
+  isEmpty: boolean;
 
   applyFilter(filter: string): void;
   loadItems(): void;
@@ -41,6 +42,11 @@ class TaskStore implements ITaskStore {
       case 'completed': return this.items.filter((task) => task.completed);
       default: return this.items;
     }
+  }
+
+  @computed
+  get isEmpty() {
+    return this.items.length === 0;
   }
 
   @action.bound
@@ -75,7 +81,7 @@ class TaskStore implements ITaskStore {
 
     await this.dbRef.child('items').push({
       title: fields.addTask.trim(),
-      description: '',
+      description: 'dddddddddddd',
       createdAt: moment().toJSON(),
       completed: false,
       completedAt: null,

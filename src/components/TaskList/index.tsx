@@ -23,7 +23,7 @@ class TaskList extends React.Component<IProps> {
     return (
       <>
         <AddTask />
-        <Filters />
+        {!this.props.tasks.isEmpty && <Filters />}
         <Card.Group>
           {this.renderTasks()}
         </Card.Group>
