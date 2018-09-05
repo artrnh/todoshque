@@ -16,7 +16,7 @@ export interface IProps {
 class Filters extends React.Component<IProps> {
   public render() {
     return (
-      <Breadcrumbs size='large'>
+      <Breadcrumb size='large'>
 
         <Filter active={this.isFilterActive('all')} onClick={this.applyFilter('all')}>
           View All
@@ -34,17 +34,13 @@ class Filters extends React.Component<IProps> {
           Completed
         </Filter>
 
-      </Breadcrumbs>
+      </Breadcrumb>
     );
   }
 
   private applyFilter = (filter: string) => (e: React.MouseEvent): void => this.props.tasks.applyFilter(filter);
   private isFilterActive = (filter: string) => this.props.tasks.activeFilter === filter;
 }
-
-const Breadcrumbs = styled(Breadcrumb)`
-  margin-bottom: 20px !important;
-`;
 
 const Filter = styled(Section)`
   color: ${(props) => props.active && '#000'} !important;

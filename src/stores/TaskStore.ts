@@ -28,19 +28,23 @@ export interface ITaskStore {
   addTask(fields: IAddTaskFormFields): void;
   deleteTask(id: string): void;
   toggleTask(id: string): void;
+  searchTasks(query: string): void;
 }
 
 class TaskStore implements ITaskStore {
   @observable public items: ITask[] = [];
   @observable public activeFilter: string = 'all';
+  @observable public searchQuery: string = '';
   private dbRef: firebase.database.Reference = firebase.database().ref();
 
   @computed
   get filteredItems() {
+    const searched = this.items.filter((task) => task.title.includes(this.searchQuery));
+
     switch (this.activeFilter) {
-      case 'active': return this.items.filter((task) => !task.completed);
-      case 'completed': return this.items.filter((task) => task.completed);
-      default: return this.items;
+      case 'active': return searched.filter((task) => !task.completed);
+      case 'completed': return searched.filter((task) => task.completed);
+      default: return searched;
     }
   }
 
@@ -81,7 +85,7 @@ class TaskStore implements ITaskStore {
 
     await this.dbRef.child('items').push({
       title: fields.addTask.trim(),
-      description: 'dddddddddddd',
+      description: '',
       createdAt: moment().toJSON(),
       completed: false,
       completedAt: null,
@@ -103,6 +107,11 @@ class TaskStore implements ITaskStore {
       createdAt: selectedTask.createdAt.toJSON(),
       completedAt: moment().toJSON(),
     });
+  }
+
+  @action.bound
+  public searchTasks(query: string) {
+    this.searchQuery = query.trim();
   }
 }
 

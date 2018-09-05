@@ -4,8 +4,10 @@ import { inject, observer } from 'mobx-react';
 import { Card } from 'semantic-ui-react';
 
 import { ITaskStore } from '../../stores/TaskStore';
+import styled from '../../styled';
 import AddTask from './AddTask';
 import Filters from './Filters';
+import Search from './Search';
 import TaskCard from './TaskCard';
 
 export interface IProps {
@@ -23,11 +25,22 @@ class TaskList extends React.Component<IProps> {
     return (
       <>
         <AddTask />
-        {!this.props.tasks.isEmpty && <Filters />}
+        {this.renderHeader()}
         <Card.Group>
           {this.renderTasks()}
         </Card.Group>
       </>
+    );
+  }
+
+  private renderHeader = (): React.ReactNode => {
+    if (this.props.tasks.isEmpty) return null;
+
+    return (
+      <Header>
+        <Filters />
+        <Search />
+      </Header>
     );
   }
 
@@ -45,5 +58,12 @@ class TaskList extends React.Component<IProps> {
     ));
   }
 }
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+`;
 
 export default TaskList;

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { inject } from 'mobx-react';
 import * as moment from 'moment';
-import { Button, Card, Icon, Label } from 'semantic-ui-react';
+import { Button, Card, Icon, Label, Segment } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 
 import { ITaskStore } from '../../../stores/TaskStore';
@@ -77,7 +77,7 @@ class TaskCard extends React.Component<IProps> {
 
             {description && <CompletedDescription>{description}</CompletedDescription>}
 
-            <Label color='green' attached='bottom'>Completed</Label>
+            <Label color='green' attached='bottom right'>Completed</Label>
 
           </Content>
         </Card>
