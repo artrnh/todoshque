@@ -2,145 +2,121 @@ import * as React from 'react';
 
 import { inject } from 'mobx-react';
 import * as moment from 'moment';
-import { Button, Card, Icon, Label, Segment } from 'semantic-ui-react';
+import { Button, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 
 import { ITaskStore } from '../../../stores/TaskStore';
 import styled from '../../../styled';
+import TaskEdit from './TaskEdit';
 
 export interface IProps {
   id: string;
   title: string;
-  description?: string;
+  description: string;
   createdAt: moment.Moment;
   completed: boolean;
-  completedAt?: moment.Moment;
+  completedAt: moment.Moment;
   tasks?: ITaskStore;
 }
 
 @inject('tasks')
 class TaskCard extends React.Component<IProps> {
   public render() {
-    return (this.renderCard());
-  }
+    const { completed, title } = this.props;
 
-  private renderCard = (): React.ReactNode => {
-    const { completed, description, title, completedAt, createdAt } = this.props;
+    return (
+      <Card fluid>
+        <Content>
+          <Header>
 
-    if (completed) {
-      return (
-        <Card fluid>
-          <Content>
-            <Header>
+            <Button
+              onClick={this.completeTask}
+              floated='left'
+              icon
+              compact
+              circular
+              color={completed ? null : 'green'}
+            >
+              <Icon name='check' color={completed ? 'green' : null} />
+            </Button>
 
-              <Button
-                onClick={this.completeTask}
-                floated='left'
-                icon
-                compact
-                circular
-              >
-                <Icon name='check' color='green' />
-              </Button>
+            <TaskTitle completed={completed}>
+              {title}
+            </TaskTitle>
 
-              <TaskTitle completed>
-                {title}
-              </TaskTitle>
+            <Button
+              onClick={this.deleteTask}
+              floated='right'
+              color='red'
+              icon
+              compact
+              circular
+            >
+              <Icon name='trash' />
+            </Button>
 
-              <Button
-                onClick={this.deleteTask}
-                floated='right'
-                color='red'
-                icon
-                compact
-                circular
-              >
-                <Icon name='trash' />
-              </Button>
+            <TaskEdit
+              {...this.props}
+              trigger={
+                <Button
+                  floated='right'
+                  color='green'
+                  icon
+                  compact
+                  circular
+                  disabled={completed}
+                >
+                  <Icon name='pencil' />
+                </Button>
+              }
+            />
 
-              <Button
-                floated='right'
-                color='green'
-                icon
-                compact
-                circular
-                disabled
-              >
-                <Icon name='pencil' />
-              </Button>
+            {completed && <Label color='green' attached='bottom'>Completed</Label>}
 
-            </Header>
+          </Header>
 
-            <Moment>
-              Completed {completedAt.fromNow()}
-            </Moment>
+          {this.renderMoment()}
+          {this.renderDescription()}
 
-            {description && <CompletedDescription>{description}</CompletedDescription>}
-
-            <Label color='green' attached='bottom right'>Completed</Label>
-
-          </Content>
-        </Card>
-      );
-    } else {
-      return (
-        <Card fluid>
-          <Content>
-            <Header>
-
-              <Button
-                onClick={this.completeTask}
-                floated='left'
-                icon
-                compact
-                circular
-                color='green'
-              >
-                <Icon name='check' />
-              </Button>
-
-              <TaskTitle>
-                {title}
-              </TaskTitle>
-
-              <Button
-                onClick={this.deleteTask}
-                floated='right'
-                color='red'
-                icon
-                compact
-                circular
-              >
-                <Icon name='trash' />
-              </Button>
-
-              <Button
-                floated='right'
-                color='green'
-                icon
-                compact
-                circular
-              >
-                <Icon name='pencil' />
-              </Button>
-
-            </Header>
-
-            <Moment>
-              Created {createdAt.fromNow()}
-            </Moment>
-
-            {description && <Description>{description}</Description>}
-
-          </Content>
-        </Card>
-      );
-    }
+        </Content>
+      </Card>
+    );
   }
 
   private deleteTask = (): void => this.props.tasks.deleteTask(this.props.id);
 
   private completeTask = (): void => this.props.tasks.toggleTask(this.props.id);
+
+  private renderMoment = (): React.ReactNode => {
+    const { completed, completedAt, createdAt } = this.props;
+
+    const word = completed ? 'Completed' : 'Created';
+    const fromNow = completed ? completedAt.fromNow() : createdAt.fromNow();
+
+    return (
+      <Moment>
+        {`${word} ${fromNow}`}
+      </Moment>
+    );
+  }
+
+  private renderDescription = (): React.ReactNode => {
+    const { completed, description } = this.props;
+
+    if (!description) return null;
+
+    const style = {
+      color: completed && 'grey',
+      textDecoration: completed && 'line-through',
+      textDecorationColor: 'green',
+    };
+
+    return (
+      <Description style={style} >
+        {description}
+      </Description>
+    );
+  }
 }
 
 interface ITaskTitle {
@@ -157,12 +133,6 @@ const TaskTitle = styled.h3<ITaskTitle>`
 
 const Moment = styled(Meta)`
   margin-left: 45px;
-`;
-
-const CompletedDescription = styled(Description)`
-  color: grey !important;
-  text-decoration: line-through;
-  text-decoration-color: green;
 `;
 
 export default TaskCard;
