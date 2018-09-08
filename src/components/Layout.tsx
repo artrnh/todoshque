@@ -18,7 +18,7 @@ const Container = styled.div`
   padding: 20px;
 
   ${media.desktop`width: 60%;`}
-  ${media.tablet`width: 70%;`}
+  ${media.tablet`width: 80%;`}
   ${media.phone`width: 100%;`}
 `;
 

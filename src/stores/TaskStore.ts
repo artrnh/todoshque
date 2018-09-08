@@ -39,7 +39,7 @@ class TaskStore implements ITaskStore {
 
   @computed
   get filteredItems() {
-    const searched = this.items.filter((task) => task.title.includes(this.searchQuery));
+    const searched = this.items.filter((task) => task.title.toLowerCase().includes(this.searchQuery));
 
     switch (this.activeFilter) {
       case 'active': return searched.filter((task) => !task.completed);
@@ -111,7 +111,7 @@ class TaskStore implements ITaskStore {
 
   @action.bound
   public searchTasks(query: string) {
-    this.searchQuery = query.trim();
+    this.searchQuery = query.trim().toLowerCase();
   }
 }
 
