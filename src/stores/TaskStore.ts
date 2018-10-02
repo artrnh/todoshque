@@ -90,7 +90,7 @@ class TaskStore implements ITaskStore {
 
     await this.dbRef.child('items').push({
       title: fields.addTask.trim(),
-      description: 'sss',
+      description: '',
       createdAt: moment().toJSON(),
       completed: false,
       completedAt: null,
