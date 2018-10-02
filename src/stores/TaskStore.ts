@@ -7,6 +7,10 @@ export interface IAddTaskFormFields {
   addTask: string;
 }
 
+export interface ITaskEditFormFields {
+  description: string;
+}
+
 export interface ITask {
   id: string;
   title: string;
@@ -29,6 +33,7 @@ export interface ITaskStore {
   deleteTask(id: string): void;
   toggleTask(id: string): void;
   searchTasks(query: string): void;
+  editTask(id: string): (fields: ITaskEditFormFields) => void;
 }
 
 class TaskStore implements ITaskStore {
@@ -85,7 +90,7 @@ class TaskStore implements ITaskStore {
 
     await this.dbRef.child('items').push({
       title: fields.addTask.trim(),
-      description: '',
+      description: 'sss',
       createdAt: moment().toJSON(),
       completed: false,
       completedAt: null,
@@ -112,6 +117,22 @@ class TaskStore implements ITaskStore {
   @action.bound
   public searchTasks(query: string) {
     this.searchQuery = query.trim().toLowerCase();
+  }
+
+  @action.bound
+  public editTask(id: string) {
+    return (fields: ITaskEditFormFields) => {
+      const editingTask = this.items.find((task) => task.id === id);
+
+      this.dbRef.update({
+        [`/items/${id}`]: {
+          ...editingTask,
+          createdAt: editingTask.createdAt.toJSON(),
+          completedAt: editingTask.completedAt.toJSON(),
+          ...fields,
+        },
+      });
+    };
   }
 }
 

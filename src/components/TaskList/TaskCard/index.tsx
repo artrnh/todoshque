@@ -21,6 +21,8 @@ export interface IProps {
 
 @inject('tasks')
 class TaskCard extends React.Component<IProps> {
+  public static Btn;
+
   public render() {
     const { completed, title } = this.props;
 
@@ -29,45 +31,36 @@ class TaskCard extends React.Component<IProps> {
         <Content>
           <Header>
 
-            <Button
+            <TaskCard.Btn
               onClick={this.completeTask}
               floated='left'
-              icon
-              compact
-              circular
               color={completed ? null : 'green'}
             >
               <Icon name='check' color={completed ? 'green' : null} />
-            </Button>
+            </TaskCard.Btn>
 
             <TaskTitle completed={completed}>
               {title}
             </TaskTitle>
 
-            <Button
+            <TaskCard.Btn
               onClick={this.deleteTask}
               floated='right'
               color='red'
-              icon
-              compact
-              circular
             >
               <Icon name='trash' />
-            </Button>
+            </TaskCard.Btn>
 
             <TaskEdit
               {...this.props}
               trigger={
-                <Button
+                <TaskCard.Btn
                   floated='right'
                   color='green'
-                  icon
-                  compact
-                  circular
                   disabled={completed}
                 >
                   <Icon name='pencil' />
-                </Button>
+                </TaskCard.Btn>
               }
             />
 
@@ -112,18 +105,25 @@ class TaskCard extends React.Component<IProps> {
     };
 
     return (
-      <Description style={style} >
+      <Description style={style}>
         {description}
       </Description>
     );
   }
 }
 
-interface ITaskTitle {
-  completed?: boolean;
-}
+TaskCard.Btn = (props): React.ReactNode => (
+  <Button
+    icon
+    compact
+    circular
+    {...props}
+  >
+    {props.children}
+  </Button>
+);
 
-const TaskTitle = styled.h3<ITaskTitle>`
+const TaskTitle = styled.h3<{ completed: boolean }>`
   display: inline-block;
   margin: 0;
   padding: 0 10px;
