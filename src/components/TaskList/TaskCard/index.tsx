@@ -4,9 +4,9 @@ import { inject } from 'mobx-react';
 import * as moment from 'moment';
 import { Button, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
+import styled from 'styled-components';
 
 import { ITaskStore } from '../../../stores/TaskStore';
-import styled from '../../../styled';
 import TaskEdit from './TaskEdit';
 
 export interface IProps {

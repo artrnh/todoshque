@@ -3,9 +3,9 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Field, Form } from 'react-final-form';
 import { Input } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 import { ITaskStore } from '../../../stores/TaskStore';
-import styled from '../../../styled';
 
 export interface IProps {
   tasks?: ITaskStore;

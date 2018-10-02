@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { inject, observer } from 'mobx-react';
 import { Card } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 import { ITaskStore } from '../../stores/TaskStore';
-import styled from '../../styled';
 import AddTask from './AddTask';
 import Filters from './Filters';
 import Search from './Search';

@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { inject, observer } from 'mobx-react';
 import { Input } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 import { ITaskStore } from '../../../stores/TaskStore';
-import styled from '../../../styled';
 import media from '../../../utils/media';
 
 export interface IProps {

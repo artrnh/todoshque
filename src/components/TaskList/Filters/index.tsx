@@ -3,9 +3,9 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Breadcrumb } from 'semantic-ui-react';
 const { Divider, Section } = Breadcrumb;
+import styled from 'styled-components';
 
 import { ITaskStore } from '../../../stores/TaskStore';
-import styled from '../../../styled';
 
 export interface IProps {
   tasks?: ITaskStore;
