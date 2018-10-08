@@ -25,6 +25,7 @@ export interface ITaskStore {
   filteredItems: ITask[];
   activeFilter: string;
   isEmpty: boolean;
+  editingModalOpened: boolean;
 
   applyFilter(filter: string): void;
   loadItems(): void;
@@ -33,13 +34,15 @@ export interface ITaskStore {
   deleteTask(id: string): void;
   toggleTask(id: string): void;
   searchTasks(query: string): void;
-  editTask(id: string): (fields: ITaskEditFormFields) => void;
+  editTask(id: string, fields: ITaskEditFormFields): void;
+  toggleEditingModal(): void;
 }
 
 class TaskStore implements ITaskStore {
   @observable public items: ITask[] = [];
   @observable public activeFilter: string = 'all';
   @observable public searchQuery: string = '';
+  @observable public editingModalOpened: boolean = false;
   private dbRef: firebase.database.Reference = firebase.database().ref();
 
   @computed
@@ -120,19 +123,22 @@ class TaskStore implements ITaskStore {
   }
 
   @action.bound
-  public editTask(id: string) {
-    return (fields: ITaskEditFormFields) => {
-      const editingTask = this.items.find((task) => task.id === id);
+  public editTask(id: string, fields: ITaskEditFormFields) {
+    const editingTask = this.items.find((task) => task.id === id);
 
-      this.dbRef.update({
-        [`/items/${id}`]: {
-          ...editingTask,
-          createdAt: editingTask.createdAt.toJSON(),
-          completedAt: editingTask.completedAt.toJSON(),
-          ...fields,
-        },
-      });
-    };
+    this.dbRef.update({
+      [`/items/${id}`]: {
+        ...editingTask,
+        createdAt: editingTask.createdAt.toJSON(),
+        completedAt: editingTask.completedAt.toJSON(),
+        ...fields,
+      },
+    });
+  }
+
+  @action.bound
+  public toggleEditingModal() {
+    this.editingModalOpened = !this.editingModalOpened;
   }
 }
 

@@ -24,7 +24,7 @@ class TaskCard extends React.Component<IProps> {
   public static Btn;
 
   public render() {
-    const { completed, title } = this.props;
+    const { completed, title, tasks } = this.props;
 
     return (
       <Card fluid>
@@ -58,6 +58,7 @@ class TaskCard extends React.Component<IProps> {
                   floated='right'
                   color='green'
                   disabled={completed}
+                  onClick={tasks.toggleEditingModal}
                 >
                   <Icon name='pencil' />
                 </TaskCard.Btn>
