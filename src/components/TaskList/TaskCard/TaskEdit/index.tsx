@@ -31,10 +31,8 @@ class TaskEdit extends React.Component<IProps> {
   }
 
   public render() {
-    const { title, trigger, description, id, tasks } = this.props;
-
-    // Magic
-    console.log(tasks.editingModalOpened);
+    const { title, trigger, description, id } = this.props;
+    const { editingModalOpened, toggleEditingModal } = this.props.tasks;
 
     return (
       <FinalForm
@@ -44,8 +42,8 @@ class TaskEdit extends React.Component<IProps> {
           <Modal
             trigger={trigger}
             centered={false}
-            open={tasks.editingModalOpened}
-            onClose={tasks.toggleEditingModal}
+            open={editingModalOpened}
+            onClose={toggleEditingModal}
           >
 
             <Modal.Header>
