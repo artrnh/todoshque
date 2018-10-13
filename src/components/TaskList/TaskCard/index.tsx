@@ -6,7 +6,7 @@ import { Button, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 import styled from 'styled-components';
 
-import { ITaskStore } from '../../../stores/TaskStore';
+import { ITaskStore } from 'Stores/TaskStore';
 import TaskEdit from './TaskEdit';
 
 export interface IProps {

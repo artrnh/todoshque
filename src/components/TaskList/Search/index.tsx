@@ -4,8 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { Input } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { ITaskStore } from '../../../stores/TaskStore';
-import media from '../../../utils/media';
+import { ITaskStore } from 'Stores/TaskStore';
+import media from 'Utils/media';
 
 export interface IProps {
   tasks?: ITaskStore;

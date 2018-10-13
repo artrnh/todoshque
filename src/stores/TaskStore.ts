@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import * as moment from 'moment';
 
-import firebase from '../utils/firebase';
+import firebase from 'Utils/firebase';
 
 export interface IAddTaskFormFields {
   addTask: string;

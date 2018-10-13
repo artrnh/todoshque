@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 
-import media from '../utils/media';
+import media from 'Utils/media';
 
 export interface IProps {
   render(): React.ReactNode;

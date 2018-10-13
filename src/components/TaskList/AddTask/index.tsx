@@ -5,7 +5,7 @@ import { Field, Form } from 'react-final-form';
 import { Input } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { ITaskStore } from '../../../stores/TaskStore';
+import { ITaskStore } from 'Stores/TaskStore';
 
 export interface IProps {
   tasks?: ITaskStore;

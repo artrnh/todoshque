@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import * as _ from 'lodash';
-import { action, computed, observable, toJS } from 'mobx';
+import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as moment from 'moment';
 import { Field, Form as FinalForm } from 'react-final-form';
 import { Button, Form, Icon, Modal, TextArea } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { ITaskEditFormFields, ITaskStore } from '../../../../stores/TaskStore';
+import { ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
 
 export interface IProps {
   id: string;
@@ -37,7 +37,7 @@ class TaskEdit extends React.Component<IProps> {
     return (
       <FinalForm
         onSubmit={this.handleSubmit(id)}
-        initialValues={{ title, description }}
+        initialValues={{ description }}
         render={({ handleSubmit, values, form }) => (
           <Modal
             trigger={trigger}

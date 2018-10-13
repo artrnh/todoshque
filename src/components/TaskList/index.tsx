@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { Card } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { ITaskStore } from '../../stores/TaskStore';
+import { ITaskStore } from 'Stores/TaskStore';
 import AddTask from './AddTask';
 import Filters from './Filters';
 import Search from './Search';

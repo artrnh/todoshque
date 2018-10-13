@@ -27,6 +27,11 @@ module.exports = {
   },  
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      Utils: path.resolve(__dirname, 'src/utils/'),
+      Stores: path.resolve(__dirname, 'src/stores/'),
+      Components: path.resolve(__dirname, 'src/components/'),
+    }
   },
   plugins: [new webpack.NamedModulesPlugin()],
   devServer: {

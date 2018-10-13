@@ -5,7 +5,7 @@ import { Breadcrumb } from 'semantic-ui-react';
 const { Divider, Section } = Breadcrumb;
 import styled from 'styled-components';
 
-import { ITaskStore } from '../../../stores/TaskStore';
+import { ITaskStore } from 'Stores/TaskStore';
 
 export interface IProps {
   tasks?: ITaskStore;

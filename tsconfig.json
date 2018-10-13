@@ -15,6 +15,12 @@
       "dom",
       "esnext.asynciterable"
     ],
+    "baseUrl": "./",
+    "paths": {
+      "Utils/*": ["src/utils/*"],
+      "Stores/*": ["src/stores/*"],
+      "Components/*": ["src/components/*"]
+    }
   },
   "include": [
     "./src/**/*"
