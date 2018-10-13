@@ -8,7 +8,9 @@ export interface IProps {
   render(): React.ReactNode;
 }
 
-const Layout: React.SFC<IProps> = (props) => <Container>{props.render()}</Container>;
+const Layout: React.SFC<IProps> = props => (
+  <Container>{props.render()}</Container>
+);
 
 const Container = styled.div`
   display: flex;

@@ -30,48 +30,43 @@ class TaskCard extends React.Component<IProps> {
       <Card fluid>
         <Content>
           <Header>
-
             <TaskCard.Btn
               onClick={this.completeTask}
-              floated='left'
+              floated="left"
               color={completed ? null : 'green'}
             >
-              <Icon name='check' color={completed ? 'green' : null} />
+              <Icon name="check" color={completed ? 'green' : null} />
             </TaskCard.Btn>
 
-            <TaskTitle completed={completed}>
-              {title}
-            </TaskTitle>
+            <TaskTitle completed={completed}>{title}</TaskTitle>
 
-            <TaskCard.Btn
-              onClick={this.deleteTask}
-              floated='right'
-              color='red'
-            >
-              <Icon name='trash' />
+            <TaskCard.Btn onClick={this.deleteTask} floated="right" color="red">
+              <Icon name="trash" />
             </TaskCard.Btn>
 
             <TaskEdit
               {...this.props}
               trigger={
                 <TaskCard.Btn
-                  floated='right'
-                  color='green'
+                  floated="right"
+                  color="green"
                   disabled={completed}
                   onClick={tasks.toggleEditingModal}
                 >
-                  <Icon name='pencil' />
+                  <Icon name="pencil" />
                 </TaskCard.Btn>
               }
             />
 
-            {completed && <Label color='green' attached='bottom'>Completed</Label>}
-
+            {completed && (
+              <Label color="green" attached="bottom">
+                Completed
+              </Label>
+            )}
           </Header>
 
           {this.renderMoment()}
           {this.renderDescription()}
-
         </Content>
       </Card>
     );
@@ -87,12 +82,8 @@ class TaskCard extends React.Component<IProps> {
     const word = completed ? 'Completed' : 'Created';
     const fromNow = completed ? completedAt.fromNow() : createdAt.fromNow();
 
-    return (
-      <Moment>
-        {`${word} ${fromNow}`}
-      </Moment>
-    );
-  }
+    return <Moment>{`${word} ${fromNow}`}</Moment>;
+  };
 
   private renderDescription = (): React.ReactNode => {
     const { completed, description } = this.props;
@@ -105,21 +96,12 @@ class TaskCard extends React.Component<IProps> {
       textDecorationColor: 'green',
     };
 
-    return (
-      <Description style={style}>
-        {description}
-      </Description>
-    );
-  }
+    return <Description style={style}>{description}</Description>;
+  };
 }
 
 TaskCard.Btn = (props): React.ReactNode => (
-  <Button
-    icon
-    compact
-    circular
-    {...props}
-  >
+  <Button icon compact circular {...props}>
     {props.children}
   </Button>
 );
@@ -129,7 +111,7 @@ const TaskTitle = styled.h3<{ completed: boolean }>`
   margin: 0;
   padding: 0 10px;
 
-  color: ${(props) => props.completed && 'grey'};
+  color: ${props => props.completed && 'grey'};
 `;
 
 const Moment = styled(Meta)`

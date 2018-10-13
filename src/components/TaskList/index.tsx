@@ -26,9 +26,7 @@ class TaskList extends React.Component<IProps> {
       <>
         <AddTask />
         {this.renderHeader()}
-        <Card.Group>
-          {this.renderTasks()}
-        </Card.Group>
+        <Card.Group>{this.renderTasks()}</Card.Group>
       </>
     );
   }
@@ -42,10 +40,10 @@ class TaskList extends React.Component<IProps> {
         <Search />
       </Header>
     );
-  }
+  };
 
   private renderTasks = (): React.ReactNode[] => {
-    return this.props.tasks.filteredItems.map((task) => (
+    return this.props.tasks.filteredItems.map(task => (
       <TaskCard
         key={task.id}
         id={task.id}
@@ -56,7 +54,7 @@ class TaskList extends React.Component<IProps> {
         completedAt={task.completedAt}
       />
     ));
-  }
+  };
 }
 
 const Header = styled.div`

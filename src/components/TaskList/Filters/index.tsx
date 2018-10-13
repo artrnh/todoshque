@@ -16,34 +16,44 @@ export interface IProps {
 class Filters extends React.Component<IProps> {
   public render() {
     return (
-      <Breadcrumb size='large'>
-
-        <Filter active={this.isFilterActive('all')} onClick={this.applyFilter('all')}>
+      <Breadcrumb size="large">
+        <Filter
+          active={this.isFilterActive('all')}
+          onClick={this.applyFilter('all')}
+        >
           View All
         </Filter>
 
-        <Divider icon='bolt' />
+        <Divider icon="bolt" />
 
-        <Filter active={this.isFilterActive('active')} onClick={this.applyFilter('active')}>
+        <Filter
+          active={this.isFilterActive('active')}
+          onClick={this.applyFilter('active')}
+        >
           Active
         </Filter>
 
-        <Divider icon='bolt' />
+        <Divider icon="bolt" />
 
-        <Filter active={this.isFilterActive('completed')} onClick={this.applyFilter('completed')}>
+        <Filter
+          active={this.isFilterActive('completed')}
+          onClick={this.applyFilter('completed')}
+        >
           Completed
         </Filter>
-
       </Breadcrumb>
     );
   }
 
-  private applyFilter = (filter: string) => (e: React.MouseEvent): void => this.props.tasks.applyFilter(filter);
-  private isFilterActive = (filter: string) => this.props.tasks.activeFilter === filter;
+  private applyFilter = (filter: string) => (e: React.MouseEvent): void =>
+    this.props.tasks.applyFilter(filter);
+
+  private isFilterActive = (filter: string) =>
+    this.props.tasks.activeFilter === filter;
 }
 
 const Filter = styled(Section)`
-  color: ${(props) => props.active && '#000'} !important;
+  color: ${props => props.active && '#000'} !important;
 `;
 
 export default Filters;

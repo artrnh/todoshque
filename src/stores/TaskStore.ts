@@ -39,20 +39,29 @@ export interface ITaskStore {
 }
 
 class TaskStore implements ITaskStore {
-  @observable public items: ITask[] = [];
-  @observable public activeFilter: string = 'all';
-  @observable public searchQuery: string = '';
-  @observable public editingModalOpened: boolean = false;
+  @observable
+  public items: ITask[] = [];
+  @observable
+  public activeFilter: string = 'all';
+  @observable
+  public searchQuery: string = '';
+  @observable
+  public editingModalOpened: boolean = false;
   private dbRef: firebase.database.Reference = firebase.database().ref();
 
   @computed
   get filteredItems() {
-    const searched = this.items.filter((task) => task.title.toLowerCase().includes(this.searchQuery));
+    const searched = this.items.filter(task =>
+      task.title.toLowerCase().includes(this.searchQuery),
+    );
 
     switch (this.activeFilter) {
-      case 'active': return searched.filter((task) => !task.completed);
-      case 'completed': return searched.filter((task) => task.completed);
-      default: return searched;
+      case 'active':
+        return searched.filter(task => !task.completed);
+      case 'completed':
+        return searched.filter(task => task.completed);
+      default:
+        return searched;
     }
   }
 
@@ -68,7 +77,7 @@ class TaskStore implements ITaskStore {
 
   @action.bound
   public loadItems() {
-    this.dbRef.child('items').on('value', (snapshot) => {
+    this.dbRef.child('items').on('value', snapshot => {
       const items = snapshot.val() || [];
 
       this.updateItems(
@@ -107,7 +116,7 @@ class TaskStore implements ITaskStore {
 
   @action.bound
   public async toggleTask(id: string) {
-    const selectedTask = this.items.find((task) => task.id === id);
+    const selectedTask = this.items.find(task => task.id === id);
 
     await this.dbRef.child(`items/${id}`).set({
       ...selectedTask,
@@ -124,7 +133,7 @@ class TaskStore implements ITaskStore {
 
   @action.bound
   public editTask(id: string, fields: ITaskEditFormFields) {
-    const editingTask = this.items.find((task) => task.id === id);
+    const editingTask = this.items.find(task => task.id === id);
 
     this.dbRef.update({
       [`/items/${id}`]: {

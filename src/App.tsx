@@ -10,8 +10,8 @@ const App: React.SFC = () => (
   <Layout
     render={() => (
       <>
-        <Header as='h1'>
-          <Icon name='tasks' />
+        <Header as="h1">
+          <Icon name="tasks" />
           <Header.Content>Ultimate todoshque</Header.Content>
         </Header>
         <TaskList />

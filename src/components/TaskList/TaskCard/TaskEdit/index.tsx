@@ -27,7 +27,7 @@ export interface IProps {
 class TaskEdit extends React.Component<IProps> {
   @computed
   get currentTask() {
-    return this.props.tasks.items.find((task) => task.id === this.props.id);
+    return this.props.tasks.items.find(task => task.id === this.props.id);
   }
 
   public render() {
@@ -45,23 +45,19 @@ class TaskEdit extends React.Component<IProps> {
             open={editingModalOpened}
             onClose={toggleEditingModal}
           >
-
-            <Modal.Header>
-              {title}
-            </Modal.Header>
+            <Modal.Header>{title}</Modal.Header>
 
             <Modal.Content>
               <Modal.Description>
-
                 <Form onSubmit={handleSubmit}>
                   <Field
-                    name='description'
+                    name="description"
                     render={({ input }) => (
                       <Form.Field>
                         <label>Description</label>
                         <TextArea
                           {...input}
-                          placeholder='Add description...'
+                          placeholder="Add description..."
                           autoHeight
                         />
                       </Form.Field>
@@ -69,12 +65,9 @@ class TaskEdit extends React.Component<IProps> {
                   />
 
                   {this.renderSaveButtons(values, form.reset)}
-
                 </Form>
-
               </Modal.Description>
             </Modal.Content>
-
           </Modal>
         )}
       />
@@ -86,18 +79,15 @@ class TaskEdit extends React.Component<IProps> {
 
     return (
       <>
-        <Button
-          htmltype='submit'
-          color='green'
-        >
+        <Button htmltype="submit" color="green">
           Сохранить
         </Button>
 
         <CancelIcon
           onClick={reset}
-          name='close'
-          size='large'
-          color='grey'
+          name="close"
+          size="large"
+          color="grey"
           link
         />
       </>
@@ -108,7 +98,7 @@ class TaskEdit extends React.Component<IProps> {
     const { editTask, toggleEditingModal } = this.props.tasks;
     editTask(id, fields);
     toggleEditingModal();
-  }
+  };
 }
 
 const CancelIcon = styled(Icon)`

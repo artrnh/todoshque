@@ -18,21 +18,22 @@ class Search extends React.Component<IProps> {
     return (
       <SearchInput
         onChange={this.searchTasks}
-        placeholder='Search...'
-        icon='search'
+        placeholder="Search..."
+        icon="search"
         transparent
       />
     );
   }
 
-  private searchTasks = (e: React.ChangeEvent<HTMLInputElement>): void => this.props.tasks.searchTasks(e.target.value);
+  private searchTasks = (e: React.ChangeEvent<HTMLInputElement>): void =>
+    this.props.tasks.searchTasks(e.target.value);
 }
 
 const SearchInput = styled(Input)`
   ${media.phone`
     width: 100%;
     margin-top: 10px;
-  `}
+  `};
 `;
 
 export default Search;

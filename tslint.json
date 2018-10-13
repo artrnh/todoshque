@@ -2,21 +2,13 @@
   "defaultSeverity": "error",
   "extends": [
     "tslint:recommended",
-    "tslint-react"
+    "tslint-react",
+    "tslint-eslint-rules",
+    "tslint-config-prettier"
   ],
   "rules": {
-    "curly": [
-      true,
-      "ignore-same-line"
-    ],
-    "quotemark": [
-      true,
-      "single"
-    ],
-    "semicolon": [
-      true,
-      "always"
-    ],
+    "curly": [true, "ignore-same-line"],
+    "quotemark": [true, "single", "jsx-double"],
     "jsx-boolean-value": false,
     "object-literal-sort-keys": false,
     "jsx-no-multiline-js": false,

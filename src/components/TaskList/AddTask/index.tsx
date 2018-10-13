@@ -20,19 +20,19 @@ class AddTask extends React.Component<IProps> {
         onSubmit={this.props.tasks.addTask}
         render={({ handleSubmit, form }) => (
           <AddTaskForm
-            onSubmit={(e) => {
+            onSubmit={e => {
               handleSubmit(e);
               form.reset();
             }}
           >
             <Field
-              name='addTask'
+              name="addTask"
               render={({ input }) => (
                 <Input
                   {...input}
                   fluid
-                  size='huge'
-                  placeholder='What needs to be done?'
+                  size="huge"
+                  placeholder="What needs to be done?"
                 />
               )}
             />
