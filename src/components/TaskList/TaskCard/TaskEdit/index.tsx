@@ -3,22 +3,14 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import * as moment from 'moment';
 import { Field, Form as FinalForm } from 'react-final-form';
 import { Button, Form, Icon, Modal, TextArea } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
+import { ITask, ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
 
-export interface IProps {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: moment.Moment;
-  completed: boolean;
-  completedAt: moment.Moment;
-  trigger: JSX.Element;
-
+export interface IProps extends ITask {
+  trigger: React.ReactNode;
   tasks?: ITaskStore;
 }
 
@@ -26,8 +18,39 @@ export interface IProps {
 @observer
 class TaskEdit extends React.Component<IProps> {
   @computed
-  get currentTask() {
+  get currentTask(): ITask {
     return this.props.tasks.items.find(task => task.id === this.props.id);
+  }
+
+  private handleSubmit = (id: string) => (
+    fields: ITaskEditFormFields,
+  ): void => {
+    const { editTask, toggleEditingModal } = this.props.tasks;
+    editTask(id, fields);
+    toggleEditingModal();
+  };
+
+  private renderSaveButtons(
+    values: ITaskEditFormFields,
+    reset: () => void,
+  ): React.ReactNode | null {
+    if (this.currentTask.description === values.description) return null;
+
+    return (
+      <>
+        <Button htmltype="submit" color="green">
+          Сохранить
+        </Button>
+
+        <CancelIcon
+          onClick={reset}
+          name="close"
+          size="large"
+          color="grey"
+          link
+        />
+      </>
+    );
   }
 
   public render() {
@@ -64,7 +87,10 @@ class TaskEdit extends React.Component<IProps> {
                     )}
                   />
 
-                  {this.renderSaveButtons(values, form.reset)}
+                  {this.renderSaveButtons(
+                    values as ITaskEditFormFields,
+                    form.reset,
+                  )}
                 </Form>
               </Modal.Description>
             </Modal.Content>
@@ -73,32 +99,6 @@ class TaskEdit extends React.Component<IProps> {
       />
     );
   }
-
-  private renderSaveButtons(values, reset) {
-    if (this.currentTask.description === values.description) return null;
-
-    return (
-      <>
-        <Button htmltype="submit" color="green">
-          Сохранить
-        </Button>
-
-        <CancelIcon
-          onClick={reset}
-          name="close"
-          size="large"
-          color="grey"
-          link
-        />
-      </>
-    );
-  }
-
-  private handleSubmit = (id: string) => (fields: ITaskEditFormFields) => {
-    const { editTask, toggleEditingModal } = this.props.tasks;
-    editTask(id, fields);
-    toggleEditingModal();
-  };
 }
 
 const CancelIcon = styled(Icon)`

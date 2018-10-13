@@ -20,6 +20,12 @@ export interface ITask {
   completedAt: moment.Moment;
 }
 
+export const enum FilterTypes {
+  All = 'all',
+  Active = 'active',
+  Completed = 'completed',
+}
+
 export interface ITaskStore {
   items: ITask[];
   filteredItems: ITask[];
@@ -42,7 +48,7 @@ class TaskStore implements ITaskStore {
   @observable
   public items: ITask[] = [];
   @observable
-  public activeFilter: string = 'all';
+  public activeFilter: string = FilterTypes.All;
   @observable
   public searchQuery: string = '';
   @observable
@@ -56,9 +62,9 @@ class TaskStore implements ITaskStore {
     );
 
     switch (this.activeFilter) {
-      case 'active':
+      case FilterTypes.Active:
         return searched.filter(task => !task.completed);
-      case 'completed':
+      case FilterTypes.Completed:
         return searched.filter(task => task.completed);
       default:
         return searched;

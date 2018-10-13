@@ -14,6 +14,9 @@ export interface IProps {
 @inject('tasks')
 @observer
 class Search extends React.Component<IProps> {
+  private searchTasks = (e: React.ChangeEvent<HTMLInputElement>): void =>
+    this.props.tasks.searchTasks(e.target.value);
+
   public render() {
     return (
       <SearchInput
@@ -24,9 +27,6 @@ class Search extends React.Component<IProps> {
       />
     );
   }
-
-  private searchTasks = (e: React.ChangeEvent<HTMLInputElement>): void =>
-    this.props.tasks.searchTasks(e.target.value);
 }
 
 const SearchInput = styled(Input)`

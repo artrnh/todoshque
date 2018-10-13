@@ -14,17 +14,19 @@ export interface IProps {
 @inject('tasks')
 @observer
 class AddTask extends React.Component<IProps> {
+  private handleSubmit = ({ handleSubmit, form }) => (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => {
+    handleSubmit(e);
+    form.reset();
+  };
+
   public render() {
     return (
       <Form
         onSubmit={this.props.tasks.addTask}
         render={({ handleSubmit, form }) => (
-          <AddTaskForm
-            onSubmit={e => {
-              handleSubmit(e);
-              form.reset();
-            }}
-          >
+          <AddTaskForm onSubmit={this.handleSubmit({ handleSubmit, form })}>
             <Field
               name="addTask"
               render={({ input }) => (

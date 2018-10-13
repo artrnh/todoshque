@@ -17,30 +17,11 @@ export interface IProps {
 @inject('tasks')
 @observer
 class TaskList extends React.Component<IProps> {
+  public static Header;
+
   public componentDidMount() {
     this.props.tasks.loadItems();
   }
-
-  public render() {
-    return (
-      <>
-        <AddTask />
-        {this.renderHeader()}
-        <Card.Group>{this.renderTasks()}</Card.Group>
-      </>
-    );
-  }
-
-  private renderHeader = (): React.ReactNode => {
-    if (this.props.tasks.isEmpty) return null;
-
-    return (
-      <Header>
-        <Filters />
-        <Search />
-      </Header>
-    );
-  };
 
   private renderTasks = (): React.ReactNode[] => {
     return this.props.tasks.filteredItems.map(task => (
@@ -55,7 +36,25 @@ class TaskList extends React.Component<IProps> {
       />
     ));
   };
+
+  public render() {
+    return (
+      <>
+        <AddTask />
+        <TaskList.Header isEmpty={this.props.tasks.isEmpty} />
+        <Card.Group>{this.renderTasks()}</Card.Group>
+      </>
+    );
+  }
 }
+
+TaskList.Header = ({ isEmpty }: { isEmpty: boolean }) =>
+  isEmpty ? null : (
+    <Header>
+      <Filters />
+      <Search />
+    </Header>
+  );
 
 const Header = styled.div`
   display: flex;

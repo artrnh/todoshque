@@ -1,16 +1,12 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended",
-    "tslint-react",
-    "tslint-eslint-rules",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "rules": {
     "curly": [true, "ignore-same-line"],
     "quotemark": [true, "single", "jsx-double"],
-    "jsx-boolean-value": false,
     "object-literal-sort-keys": false,
+    "member-ordering": false,
+    "jsx-boolean-value": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false
   }

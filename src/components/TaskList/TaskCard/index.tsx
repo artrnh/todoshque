@@ -1,30 +1,37 @@
 import * as React from 'react';
 
-import { inject } from 'mobx-react';
-import * as moment from 'moment';
-import { Button, Card, Icon, Label } from 'semantic-ui-react';
+import { inject, observer } from 'mobx-react';
+import { Button, ButtonProps, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 import styled from 'styled-components';
 
-import { ITaskStore } from 'Stores/TaskStore';
+import { ITask, ITaskStore } from 'Stores/TaskStore';
 import TaskEdit from './TaskEdit';
 
-export interface IProps {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: moment.Moment;
-  completed: boolean;
-  completedAt: moment.Moment;
+export interface IProps extends ITask {
   tasks?: ITaskStore;
 }
 
 @inject('tasks')
+@observer
 class TaskCard extends React.Component<IProps> {
   public static Btn;
+  public static Date;
+  public static Description;
+
+  private deleteTask = (): void => this.props.tasks.deleteTask(this.props.id);
+
+  private completeTask = (): void => this.props.tasks.toggleTask(this.props.id);
 
   public render() {
-    const { completed, title, tasks } = this.props;
+    const {
+      completed,
+      completedAt,
+      createdAt,
+      title,
+      tasks,
+      description,
+    } = this.props;
 
     return (
       <Card fluid>
@@ -65,46 +72,50 @@ class TaskCard extends React.Component<IProps> {
             )}
           </Header>
 
-          {this.renderMoment()}
-          {this.renderDescription()}
+          <TaskCard.Date
+            completed={completed}
+            completedAt={completedAt}
+            createdAt={createdAt}
+          />
+          <TaskCard.Description
+            description={description}
+            completed={completed}
+          />
         </Content>
       </Card>
     );
   }
-
-  private deleteTask = (): void => this.props.tasks.deleteTask(this.props.id);
-
-  private completeTask = (): void => this.props.tasks.toggleTask(this.props.id);
-
-  private renderMoment = (): React.ReactNode => {
-    const { completed, completedAt, createdAt } = this.props;
-
-    const word = completed ? 'Completed' : 'Created';
-    const fromNow = completed ? completedAt.fromNow() : createdAt.fromNow();
-
-    return <Moment>{`${word} ${fromNow}`}</Moment>;
-  };
-
-  private renderDescription = (): React.ReactNode => {
-    const { completed, description } = this.props;
-
-    if (!description) return null;
-
-    const style = {
-      color: completed && 'grey',
-      textDecoration: completed && 'line-through',
-      textDecorationColor: 'green',
-    };
-
-    return <Description style={style}>{description}</Description>;
-  };
 }
 
-TaskCard.Btn = (props): React.ReactNode => (
+TaskCard.Btn = (props: ButtonProps): React.ReactNode => (
   <Button icon compact circular {...props}>
     {props.children}
   </Button>
 );
+
+TaskCard.Description = ({
+  completed,
+  description,
+}: IProps): React.ReactNode | null => {
+  if (!description) return null;
+
+  return completed ? (
+    <CompletedDescription>{description}</CompletedDescription>
+  ) : (
+    <Description>{description}</Description>
+  );
+};
+
+TaskCard.Date = ({
+  completed,
+  completedAt,
+  createdAt,
+}: IProps): React.ReactNode => {
+  const word = completed ? 'Completed' : 'Created';
+  const fromNow = completed ? completedAt.fromNow() : createdAt.fromNow();
+
+  return <Moment>{`${word} ${fromNow}`}</Moment>;
+};
 
 const TaskTitle = styled.h3<{ completed: boolean }>`
   display: inline-block;
@@ -112,6 +123,11 @@ const TaskTitle = styled.h3<{ completed: boolean }>`
   padding: 0 10px;
 
   color: ${props => props.completed && 'grey'};
+`;
+
+const CompletedDescription = styled(Description)`
+  color: grey !important;
+  text-decoration: line-through;
 `;
 
 const Moment = styled(Meta)`

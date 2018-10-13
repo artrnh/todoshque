@@ -5,7 +5,7 @@ import { Breadcrumb } from 'semantic-ui-react';
 const { Divider, Section } = Breadcrumb;
 import styled from 'styled-components';
 
-import { ITaskStore } from 'Stores/TaskStore';
+import { FilterTypes, ITaskStore } from 'Stores/TaskStore';
 
 export interface IProps {
   tasks?: ITaskStore;
@@ -14,12 +14,18 @@ export interface IProps {
 @inject('tasks')
 @observer
 class Filters extends React.Component<IProps> {
+  private applyFilter = (filter: string) => (e: React.MouseEvent): void =>
+    this.props.tasks.applyFilter(filter);
+
+  private isFilterActive = (filter: string): boolean =>
+    this.props.tasks.activeFilter === filter;
+
   public render() {
     return (
       <Breadcrumb size="large">
         <Filter
-          active={this.isFilterActive('all')}
-          onClick={this.applyFilter('all')}
+          active={this.isFilterActive(FilterTypes.All)}
+          onClick={this.applyFilter(FilterTypes.All)}
         >
           View All
         </Filter>
@@ -27,8 +33,8 @@ class Filters extends React.Component<IProps> {
         <Divider icon="bolt" />
 
         <Filter
-          active={this.isFilterActive('active')}
-          onClick={this.applyFilter('active')}
+          active={this.isFilterActive(FilterTypes.Active)}
+          onClick={this.applyFilter(FilterTypes.Active)}
         >
           Active
         </Filter>
@@ -36,20 +42,14 @@ class Filters extends React.Component<IProps> {
         <Divider icon="bolt" />
 
         <Filter
-          active={this.isFilterActive('completed')}
-          onClick={this.applyFilter('completed')}
+          active={this.isFilterActive(FilterTypes.Completed)}
+          onClick={this.applyFilter(FilterTypes.Completed)}
         >
           Completed
         </Filter>
       </Breadcrumb>
     );
   }
-
-  private applyFilter = (filter: string) => (e: React.MouseEvent): void =>
-    this.props.tasks.applyFilter(filter);
-
-  private isFilterActive = (filter: string) =>
-    this.props.tasks.activeFilter === filter;
 }
 
 const Filter = styled(Section)`
