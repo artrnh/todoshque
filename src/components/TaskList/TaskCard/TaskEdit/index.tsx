@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { FormApi } from 'final-form';
 import * as _ from 'lodash';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
@@ -8,6 +9,7 @@ import { Button, Form, Icon, Modal, TextArea } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { ITask, ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
+import { normalizeFFValues } from 'Utils/index';
 
 export interface IProps extends ITask {
   trigger: React.ReactNode;
@@ -24,9 +26,11 @@ class TaskEdit extends React.Component<IProps> {
 
   private handleSubmit = (id: string) => (
     fields: ITaskEditFormFields,
+    form: FormApi,
   ): void => {
     const { editTask, toggleEditingModal } = this.props.tasks;
-    editTask(id, fields);
+
+    editTask(id, normalizeFFValues(form));
     toggleEditingModal();
   };
 
