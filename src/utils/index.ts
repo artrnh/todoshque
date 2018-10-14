@@ -1,5 +1,6 @@
 import { FormApi } from 'final-form';
 import * as _ from 'lodash';
+
 import { ITaskEditFormFields } from 'Stores/TaskStore';
 
 export const normalizeFFValues = (form: FormApi): ITaskEditFormFields =>

@@ -58,7 +58,7 @@ class TaskStore implements ITaskStore {
   @computed
   get filteredItems() {
     const searched = this.items.filter(task =>
-      task.title.toLowerCase().includes(this.searchQuery),
+      task.title.toLowerCase().startsWith(this.searchQuery),
     );
 
     switch (this.activeFilter) {
