@@ -34,6 +34,11 @@ class TaskEdit extends React.Component<IProps> {
     toggleEditingModal();
   };
 
+  private toggleModal = (form: FormApi) => () => {
+    this.props.tasks.toggleEditingModal();
+    form.reset();
+  }
+
   private renderSaveButtons(
     values: ITaskEditFormFields,
     reset: () => void,
@@ -59,7 +64,7 @@ class TaskEdit extends React.Component<IProps> {
 
   public render() {
     const { title, trigger, description, id } = this.props;
-    const { editingModalOpened, toggleEditingModal } = this.props.tasks;
+    const { editingModalOpened } = this.props.tasks;
 
     return (
       <FinalForm
@@ -70,7 +75,7 @@ class TaskEdit extends React.Component<IProps> {
             trigger={trigger}
             centered={false}
             open={editingModalOpened}
-            onClose={toggleEditingModal}
+            onClose={this.toggleModal(form)}
           >
             <Modal.Header>{title}</Modal.Header>
 
