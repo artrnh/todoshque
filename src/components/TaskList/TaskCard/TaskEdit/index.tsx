@@ -37,7 +37,7 @@ class TaskEdit extends React.Component<IProps> {
   private toggleModal = (form: FormApi) => () => {
     this.props.tasks.toggleEditingModal();
     form.reset();
-  }
+  };
 
   private renderSaveButtons(
     values: ITaskEditFormFields,

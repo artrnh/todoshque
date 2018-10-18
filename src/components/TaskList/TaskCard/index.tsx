@@ -1,11 +1,13 @@
 import * as React from 'react';
 
+import { action, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { Button, ButtonProps, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 import styled from 'styled-components';
 
 import { ITask, ITaskStore } from 'Stores/TaskStore';
+import ConfirmDelete from './ConfirmDelete';
 import TaskEdit from './TaskEdit';
 
 export interface IProps extends ITask {
@@ -19,7 +21,18 @@ class TaskCard extends React.Component<IProps> {
   public static Date;
   public static Description;
 
-  private deleteTask = (): void => this.props.tasks.deleteTask(this.props.id);
+  @observable
+  private confirmOpened: boolean = false;
+
+  @action.bound
+  private toggleConfirm() {
+    this.confirmOpened = !this.confirmOpened;
+  }
+
+  private deleteTask = (): void => {
+    this.props.tasks.deleteTask(this.props.id);
+    this.toggleConfirm();
+  };
 
   private completeTask = (): void => this.props.tasks.toggleTask(this.props.id);
 
@@ -47,9 +60,20 @@ class TaskCard extends React.Component<IProps> {
 
             <TaskTitle completed={completed}>{title}</TaskTitle>
 
-            <TaskCard.Btn onClick={this.deleteTask} floated="right" color="red">
-              <Icon name="trash" />
-            </TaskCard.Btn>
+            <ConfirmDelete
+              deleteTask={this.deleteTask}
+              toggleConfirm={this.toggleConfirm}
+              opened={this.confirmOpened}
+              trigger={
+                <TaskCard.Btn
+                  onClick={this.toggleConfirm}
+                  floated="right"
+                  color="red"
+                >
+                  <Icon name="trash" />
+                </TaskCard.Btn>
+              }
+            />
 
             <TaskEdit
               {...this.props}
