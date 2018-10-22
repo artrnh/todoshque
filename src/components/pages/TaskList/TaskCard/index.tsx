@@ -2,19 +2,20 @@ import * as React from 'react';
 
 import { action, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
+import { RouterStore } from 'mobx-react-router';
 import { Button, ButtonProps, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 import styled from 'styled-components';
 
 import { ITask, ITaskStore } from 'Stores/TaskStore';
 import ConfirmDelete from './ConfirmDelete';
-import TaskEdit from './TaskEdit';
 
 export interface IProps extends ITask {
   tasks?: ITaskStore;
+  routing?: RouterStore;
 }
 
-@inject('tasks')
+@inject('routing', 'tasks')
 @observer
 class TaskCard extends React.Component<IProps> {
   public static Btn;
@@ -36,13 +37,17 @@ class TaskCard extends React.Component<IProps> {
 
   private completeTask = (): void => this.props.tasks.toggleTask(this.props.id);
 
+  private redirectToEdit = (): void => {
+    this.props.routing.push(`/tasks/${this.props.id}`);
+    this.props.tasks.changeEditingModalState();
+  };
+
   public render() {
     const {
       completed,
       completedAt,
       createdAt,
       title,
-      tasks,
       description,
     } = this.props;
 
@@ -75,19 +80,14 @@ class TaskCard extends React.Component<IProps> {
               }
             />
 
-            <TaskEdit
-              {...this.props}
-              trigger={
-                <TaskCard.Btn
-                  floated="right"
-                  color="green"
-                  disabled={completed}
-                  onClick={tasks.toggleEditingModal}
-                >
-                  <Icon name="pencil" />
-                </TaskCard.Btn>
-              }
-            />
+            <TaskCard.Btn
+              floated="right"
+              color="green"
+              disabled={completed}
+              onClick={this.redirectToEdit}
+            >
+              <Icon name="pencil" />
+            </TaskCard.Btn>
 
             {completed && (
               <Label color="green" attached="bottom">

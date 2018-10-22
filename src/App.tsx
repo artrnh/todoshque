@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 import { hot } from 'react-hot-loader';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Header, Icon } from 'semantic-ui-react';
 
-import Layout from 'Components/Layout';
-import TaskList from 'Components/TaskList';
+import Layout from 'Common/Layout';
+import TaskEdit from 'Pages/TaskEdit';
+import TaskList from 'Pages/TaskList';
 
 const App: React.SFC = () => (
   <Layout
@@ -14,7 +16,10 @@ const App: React.SFC = () => (
           <Icon name="tasks" />
           <Header.Content>Ultimate todoshque</Header.Content>
         </Header>
-        <TaskList />
+
+        <Route exact path="/" render={() => <Redirect to="/tasks" />} />
+        <Route path="/tasks" component={TaskList} />
+        <Route path="/tasks/:id" component={TaskEdit} />
       </>
     )}
   />

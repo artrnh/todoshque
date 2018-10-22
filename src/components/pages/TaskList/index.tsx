@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import { inject, observer } from 'mobx-react';
-import { Card } from 'semantic-ui-react';
+import { RouteComponentProps } from 'react-router';
+import { Card, Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { ITaskStore } from 'Stores/TaskStore';
@@ -16,7 +17,7 @@ export interface IProps {
 
 @inject('tasks')
 @observer
-class TaskList extends React.Component<IProps> {
+class TaskList extends React.Component<IProps & RouteComponentProps<{}>> {
   public static Header;
 
   public componentDidMount() {

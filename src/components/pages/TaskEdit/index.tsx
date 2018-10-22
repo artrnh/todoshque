@@ -4,8 +4,10 @@ import { FormApi } from 'final-form';
 import * as _ from 'lodash';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
+import { RouterStore } from 'mobx-react-router';
 import { Field, Form as FinalForm } from 'react-final-form';
-import { Button, Form, Icon, Modal, TextArea } from 'semantic-ui-react';
+import { RouteComponentProps } from 'react-router';
+import { Button, Form, Icon, Loader, Modal, TextArea } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { ITask, ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
@@ -14,28 +16,37 @@ import { normalizeFFValues } from 'Utils/index';
 export interface IProps extends ITask {
   trigger: React.ReactNode;
   tasks?: ITaskStore;
+  routing?: RouterStore;
 }
 
-@inject('tasks')
+@inject('routing', 'tasks')
 @observer
-class TaskEdit extends React.Component<IProps> {
+class TaskEdit extends React.Component<
+  IProps & RouteComponentProps<{ id: string }>
+> {
+  public componentDidMount() {
+    const { editingModalOpened, changeEditingModalState } = this.props.tasks;
+    if (!editingModalOpened) changeEditingModalState(true);
+  }
+
   @computed
   get currentTask(): ITask {
-    return this.props.tasks.items.find(task => task.id === this.props.id);
+    return this.props.tasks.items.find(
+      task => task.id === this.props.match.params.id,
+    );
   }
 
   private handleSubmit = (id: string) => (
     fields: ITaskEditFormFields,
     form: FormApi,
   ): void => {
-    const { editTask, toggleEditingModal } = this.props.tasks;
-
-    editTask(id, normalizeFFValues(form));
-    toggleEditingModal();
+    this.props.tasks.editTask(id, normalizeFFValues(form));
+    this.toggleModal(form, false);
   };
 
-  private toggleModal = (form: FormApi) => () => {
-    this.props.tasks.toggleEditingModal();
+  private toggleModal = (form: FormApi, state = true) => () => {
+    if (!state) this.props.routing.push('/tasks');
+    this.props.tasks.changeEditingModalState(state);
     form.reset();
   };
 
@@ -63,7 +74,11 @@ class TaskEdit extends React.Component<IProps> {
   }
 
   public render() {
-    const { title, trigger, description, id } = this.props;
+    if (!this.currentTask) {
+      return <Loader size="massive">Loading...</Loader>;
+    }
+
+    const { title, description, id } = this.currentTask;
     const { editingModalOpened } = this.props.tasks;
 
     return (
@@ -72,10 +87,9 @@ class TaskEdit extends React.Component<IProps> {
         initialValues={{ description }}
         render={({ handleSubmit, values, form }) => (
           <Modal
-            trigger={trigger}
             centered={false}
             open={editingModalOpened}
-            onClose={this.toggleModal(form)}
+            onClose={this.toggleModal(form, false)}
           >
             <Modal.Header>{title}</Modal.Header>
 

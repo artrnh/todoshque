@@ -41,7 +41,7 @@ export interface ITaskStore {
   toggleTask(id: string): void;
   searchTasks(query: string): void;
   editTask(id: string, fields: ITaskEditFormFields): void;
-  toggleEditingModal(): void;
+  changeEditingModalState(state?: boolean): void;
 }
 
 class TaskStore implements ITaskStore {
@@ -152,8 +152,8 @@ class TaskStore implements ITaskStore {
   }
 
   @action.bound
-  public toggleEditingModal() {
-    this.editingModalOpened = !this.editingModalOpened;
+  public changeEditingModalState(state = true) {
+    this.editingModalOpened = state;
   }
 }
 
