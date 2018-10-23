@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
   entry: ['./src/index'],
   output: {
-    path: path.join(__dirname, 'build', 'todoshque'),
+    path: path.join(__dirname, 'build'),
     filename: 'bundle.js',
   },
   module: {
