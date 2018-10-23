@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
   entry: ['./src/index'],
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'build', 'todoshque'),
     filename: 'bundle.js',
   },
   module: {
@@ -37,7 +37,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'build'),
     historyApiFallback: true,
-    publicPath: '/',
+    publicPath: '/todoshque/',
     port: 3000,
     hot: true,
   },
