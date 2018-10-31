@@ -12,7 +12,7 @@ import 'Utils/firebase';
 import App from './App';
 import allStores from './stores';
 
-const browserHistory = createBrowserHistory({ basename: '/todoshque' });
+const browserHistory = createBrowserHistory();
 const routingStore = new RouterStore();
 const history = syncHistoryWithStore(browserHistory, routingStore);
 

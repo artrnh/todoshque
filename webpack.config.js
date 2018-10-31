@@ -37,7 +37,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'build'),
     historyApiFallback: true,
-    publicPath: '/todoshque/',
+    publicPath: '/',
     port: 3000,
     hot: true,
   },

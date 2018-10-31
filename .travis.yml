@@ -1,16 +1,16 @@
 language: node_js
 node_js:
-  - "stable"
+  - 'stable'
 cache:
   directories:
-  - node_modules
+    - node_modules
 script:
   - npm run lint
   - npm run build
 deploy:
-  provider: pages
+  provider: surge
   skip_cleanup: true
-  github_token: $github_token
-  local_dir: build
+  domain: todoshque.surge.sh
+  project: ./build/
   on:
     branch: master
