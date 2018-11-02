@@ -6,12 +6,11 @@ cache:
     - node_modules
 script:
   - npm run lint
-  - npm run build
 before_deploy:
   - npm i -g now
 deploy:
   provider: script
-  script: now --token $NOW_TOKEN && now alias --token $NOW_TOKEN
+  script: now --public --token $NOW_TOKEN && now alias --token $NOW_TOKEN
   skip_cleanup: true
   on:
     branch: master

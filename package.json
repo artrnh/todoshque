@@ -8,8 +8,7 @@
     "build": "webpack --mode production",
     "start": "serve ./build --single",
     "lint": "tslint --project .",
-    "lint-fix": "tslint --project . --fix",
-    "now-build": "echo 'Built on Travis CI'"
+    "lint-fix": "tslint --project . --fix"
   },
   "dependencies": {
     "final-form": "^4.10.0",
