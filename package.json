@@ -4,10 +4,11 @@
   "license": "MIT",
   "homepage": "https://artrnh.github.io/todoshque/",
   "scripts": {
+    "dev": "webpack-dev-server --mode development --hot",
+    "build": "webpack --mode production",
+    "start": "serve ./build --single",
     "lint": "tslint --project .",
-    "lint-fix": "tslint --project . --fix",
-    "start": "webpack-dev-server --mode development --hot",
-    "build": "webpack --mode production"
+    "lint-fix": "tslint --project . --fix"
   },
   "dependencies": {
     "final-form": "^4.10.0",
@@ -26,6 +27,7 @@
     "react-router-dom": "^4.3.1",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^0.82.5",
+    "serve": "^10.0.2",
     "styled-components": "^3.4.10"
   },
   "devDependencies": {
