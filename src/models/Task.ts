@@ -22,7 +22,8 @@ class Task implements ITask {
   public completed: boolean;
   public completedAt: moment.Moment;
 
-  constructor(name: string) {
+  constructor(id: string, name: string) {
+    this.id = id;
     this.name = name;
     this.description = '';
     this.createdAt = moment();

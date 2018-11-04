@@ -1,4 +1,5 @@
 import { action, computed, observable, runInAction } from 'mobx';
+import * as shortid from 'shortid';
 
 import Task, { ITask } from 'Models/Task';
 import firebase from 'Utils/firebase';
@@ -84,8 +85,8 @@ class TaskStore implements ITaskStore {
 
       runInAction(() => {
         this.updateItems(
-          Object.entries(items).map(([key, task]: [string, ITask]) =>
-            new Task(task.name).update({ id: key, ...task }).toJS(),
+          Object.values(items).map((task: ITask) =>
+            new Task(task.id, task.name).update(task).toJS(),
           ),
         );
 
@@ -101,8 +102,10 @@ class TaskStore implements ITaskStore {
 
   @action.bound
   public async addTask({ name }: IAddTaskFormFields) {
-    if (!name || !name.trim()) return;
-    await this.dbRef.child('items').push(new Task(name.trim()).toFB());
+    if (!name.trim()) return;
+
+    const id = shortid.generate();
+    await this.dbRef.child(`items/${id}`).set(new Task(id, name.trim()).toFB());
   }
 
   @action.bound
