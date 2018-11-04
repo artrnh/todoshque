@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'mobx-react-router';
 import { Field, Form as FinalForm } from 'react-final-form';
 import { RouteComponentProps } from 'react-router';
-import { Button, Form, Icon, Loader, Modal, TextArea } from 'semantic-ui-react';
+import { Button, Form, Icon, Modal, TextArea } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { ITask } from 'Models/Task';

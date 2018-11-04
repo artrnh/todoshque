@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { hot } from 'react-hot-loader';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { Header, Icon } from 'semantic-ui-react';
 
 import Layout from 'Common/Layout';
@@ -17,7 +17,7 @@ const App: React.SFC = () => (
           <Header.Content>Ultimate todoshque</Header.Content>
         </Header>
 
-        <Route exact path="/" render={() => <Redirect to="/tasks" />} />
+        <Route path="*" render={() => <Redirect to="/tasks" />} />
         <Route path="/tasks" component={TaskList} />
         <Route path="/tasks/:id" component={TaskEdit} />
       </>
