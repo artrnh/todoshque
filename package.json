@@ -2,7 +2,7 @@
   "name": "todoshque",
   "version": "0.0.1",
   "license": "MIT",
-  "homepage": "https://artrnh.github.io/todoshque/",
+  "homepage": "https://todoshque.now.sh",
   "scripts": {
     "dev": "webpack-dev-server --mode development --hot",
     "build": "webpack --mode production",

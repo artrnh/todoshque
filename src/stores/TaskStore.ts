@@ -1,23 +1,14 @@
-import { action, computed, observable } from 'mobx';
-import * as moment from 'moment';
+import { action, computed, observable, runInAction } from 'mobx';
 
+import Task, { ITask } from 'Models/Task';
 import firebase from 'Utils/firebase';
 
 export interface IAddTaskFormFields {
-  addTask: string;
+  name: string;
 }
 
 export interface ITaskEditFormFields {
   description: string;
-}
-
-export interface ITask {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: moment.Moment;
-  completed: boolean;
-  completedAt: moment.Moment;
 }
 
 export const enum FilterTypes {
@@ -28,6 +19,7 @@ export const enum FilterTypes {
 
 export interface ITaskStore {
   items: ITask[];
+  loading: boolean;
   filteredItems: ITask[];
   activeFilter: string;
   isEmpty: boolean;
@@ -48,6 +40,8 @@ class TaskStore implements ITaskStore {
   @observable
   public items: ITask[] = [];
   @observable
+  public loading: boolean = false;
+  @observable
   public activeFilter: string = FilterTypes.All;
   @observable
   public searchQuery: string = '';
@@ -58,7 +52,7 @@ class TaskStore implements ITaskStore {
   @computed
   get filteredItems() {
     const searched = this.items.filter(task =>
-      task.title.toLowerCase().startsWith(this.searchQuery),
+      task.name.toLowerCase().startsWith(this.searchQuery),
     );
 
     switch (this.activeFilter) {
@@ -83,17 +77,20 @@ class TaskStore implements ITaskStore {
 
   @action.bound
   public loadItems() {
+    this.loading = true;
+
     this.dbRef.child('items').on('value', snapshot => {
       const items = snapshot.val() || [];
 
-      this.updateItems(
-        Object.entries(items).map(([key, task]: [string, ITask]) => ({
-          ...task,
-          id: key,
-          createdAt: moment(task.createdAt),
-          completedAt: moment(task.completedAt),
-        })),
-      );
+      runInAction(() => {
+        this.updateItems(
+          Object.entries(items).map(([key, task]: [string, ITask]) =>
+            new Task(task.name).update({ id: key, ...task }).toJS(),
+          ),
+        );
+
+        this.loading = false;
+      });
     });
   }
 
@@ -103,16 +100,9 @@ class TaskStore implements ITaskStore {
   }
 
   @action.bound
-  public async addTask(fields: IAddTaskFormFields) {
-    if (!fields.addTask || !fields.addTask.trim()) return;
-
-    await this.dbRef.child('items').push({
-      title: fields.addTask.trim(),
-      description: '',
-      createdAt: moment().toJSON(),
-      completed: false,
-      completedAt: null,
-    });
+  public async addTask({ name }: IAddTaskFormFields) {
+    if (!name || !name.trim()) return;
+    await this.dbRef.child('items').push(new Task(name.trim()).toFB());
   }
 
   @action.bound
@@ -124,12 +114,9 @@ class TaskStore implements ITaskStore {
   public async toggleTask(id: string) {
     const selectedTask = this.items.find(task => task.id === id);
 
-    await this.dbRef.child(`items/${id}`).set({
-      ...selectedTask,
-      completed: !selectedTask.completed,
-      createdAt: selectedTask.createdAt.toJSON(),
-      completedAt: moment().toJSON(),
-    });
+    await this.dbRef
+      .child(`items/${id}`)
+      .set(selectedTask.toggleComplete().toFB());
   }
 
   @action.bound
@@ -138,17 +125,12 @@ class TaskStore implements ITaskStore {
   }
 
   @action.bound
-  public editTask(id: string, fields: ITaskEditFormFields) {
+  public async editTask(id: string, fields: ITaskEditFormFields) {
     const editingTask = this.items.find(task => task.id === id);
 
-    this.dbRef.update({
-      [`/items/${id}`]: {
-        ...editingTask,
-        createdAt: editingTask.createdAt.toJSON(),
-        completedAt: editingTask.completedAt.toJSON(),
-        ...fields,
-      },
-    });
+    await this.dbRef
+      .child(`items/${id}`)
+      .set(editingTask.update(fields as ITask).toFB());
   }
 
   @action.bound

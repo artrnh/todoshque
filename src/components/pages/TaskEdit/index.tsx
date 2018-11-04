@@ -10,7 +10,8 @@ import { RouteComponentProps } from 'react-router';
 import { Button, Form, Icon, Loader, Modal, TextArea } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { ITask, ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
+import { ITask } from 'Models/Task';
+import { ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
 import { normalizeFFValues } from 'Utils/index';
 
 export interface IProps extends ITask {
@@ -74,11 +75,9 @@ class TaskEdit extends React.Component<
   }
 
   public render() {
-    if (!this.currentTask) {
-      return <Loader size="massive">Loading...</Loader>;
-    }
+    if (!this.currentTask) return null;
 
-    const { title, description, id } = this.currentTask;
+    const { name, description, id } = this.currentTask;
     const { editingModalOpened } = this.props.tasks;
 
     return (
@@ -91,7 +90,7 @@ class TaskEdit extends React.Component<
             open={editingModalOpened}
             onClose={this.toggleModal(form, false)}
           >
-            <Modal.Header>{title}</Modal.Header>
+            <Modal.Header>{name}</Modal.Header>
 
             <Modal.Content>
               <Modal.Description>

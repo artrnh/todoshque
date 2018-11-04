@@ -14,6 +14,7 @@
     "paths": {
       "Utils/*": ["src/utils/*"],
       "Stores/*": ["src/stores/*"],
+      "Models/*": ["src/models/*"],
       "Components/*": ["src/components/*"],
       "Pages/*": ["src/components/pages/*"],
       "Common/*": ["src/components/common/*"]

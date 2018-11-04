@@ -28,7 +28,7 @@ class AddTask extends React.Component<IProps> {
         render={({ handleSubmit, form }) => (
           <AddTaskForm onSubmit={this.handleSubmit({ handleSubmit, form })}>
             <Field
-              name="addTask"
+              name="name"
               render={({ input }) => (
                 <Input
                   {...input}

@@ -7,7 +7,8 @@ import { Button, ButtonProps, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 import styled from 'styled-components';
 
-import { ITask, ITaskStore } from 'Stores/TaskStore';
+import { ITask } from 'Models/Task';
+import { ITaskStore } from 'Stores/TaskStore';
 import ConfirmDelete from './ConfirmDelete';
 
 export interface IProps extends ITask {
@@ -43,13 +44,7 @@ class TaskCard extends React.Component<IProps> {
   };
 
   public render() {
-    const {
-      completed,
-      completedAt,
-      createdAt,
-      title,
-      description,
-    } = this.props;
+    const { completed, completedAt, createdAt, name, description } = this.props;
 
     return (
       <Card fluid>
@@ -63,7 +58,7 @@ class TaskCard extends React.Component<IProps> {
               <Icon name="check" color={completed ? 'green' : null} />
             </TaskCard.Btn>
 
-            <TaskTitle completed={completed}>{title}</TaskTitle>
+            <TaskName completed={completed}>{name}</TaskName>
 
             <ConfirmDelete
               deleteTask={this.deleteTask}
@@ -141,7 +136,7 @@ TaskCard.Date = ({
   return <Moment>{`${word} ${fromNow}`}</Moment>;
 };
 
-const TaskTitle = styled.h3<{ completed: boolean }>`
+const TaskName = styled.h3<{ completed: boolean }>`
   display: inline-block;
   margin: 0;
   padding: 0 10px;
