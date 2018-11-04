@@ -42,13 +42,13 @@ class TaskEdit extends React.Component<
     form: FormApi,
   ): void => {
     this.props.tasks.editTask(id, normalizeFFValues(form));
-    this.toggleModal(form, false);
+    this.toggleModal(form.reset, false)();
   };
 
-  private toggleModal = (form: FormApi, state = true) => () => {
+  private toggleModal = (reset: () => void, state = true) => () => {
     if (!state) this.props.routing.push('/tasks');
     this.props.tasks.changeEditingModalState(state);
-    form.reset();
+    reset();
   };
 
   private renderSaveButtons(
@@ -88,7 +88,7 @@ class TaskEdit extends React.Component<
           <Modal
             centered={false}
             open={editingModalOpened}
-            onClose={this.toggleModal(form, false)}
+            onClose={this.toggleModal(form.reset, false)}
           >
             <Modal.Header>{name}</Modal.Header>
 
