@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { ITask } from 'Models/Task';
 import { ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
 import { normalizeFFValues } from 'Utils/index';
+import Description from './Description';
 
 export interface IProps extends ITask {
   trigger: React.ReactNode;
@@ -42,7 +43,6 @@ class TaskEdit extends React.Component<
     form: FormApi,
   ): void => {
     this.props.tasks.editTask(id, normalizeFFValues(form));
-    this.toggleModal(form.reset, false)();
   };
 
   private toggleModal = (reset: () => void, state = true) => () => {
@@ -50,29 +50,6 @@ class TaskEdit extends React.Component<
     this.props.tasks.changeEditingModalState(state);
     reset();
   };
-
-  private renderSaveButtons(
-    values: ITaskEditFormFields,
-    reset: () => void,
-  ): React.ReactNode | null {
-    if (this.currentTask.description === values.description) return null;
-
-    return (
-      <>
-        <Button htmltype="submit" color="green">
-          Сохранить
-        </Button>
-
-        <CancelIcon
-          onClick={reset}
-          name="close"
-          size="large"
-          color="grey"
-          link
-        />
-      </>
-    );
-  }
 
   public render() {
     if (!this.currentTask) return null;
@@ -93,28 +70,12 @@ class TaskEdit extends React.Component<
             <Modal.Header>{name}</Modal.Header>
 
             <Modal.Content>
-              <Modal.Description>
-                <Form onSubmit={handleSubmit}>
-                  <Field
-                    name="description"
-                    render={({ input }) => (
-                      <Form.Field>
-                        <label>Description</label>
-                        <TextArea
-                          {...input}
-                          placeholder="Add description..."
-                          autoHeight
-                        />
-                      </Form.Field>
-                    )}
-                  />
-
-                  {this.renderSaveButtons(
-                    values as ITaskEditFormFields,
-                    form.reset,
-                  )}
-                </Form>
-              </Modal.Description>
+              <Description
+                currentTask={this.currentTask}
+                values={values as { description: string }}
+                form={form}
+                handleSubmit={handleSubmit}
+              />
             </Modal.Content>
           </Modal>
         )}
@@ -122,9 +83,5 @@ class TaskEdit extends React.Component<
     );
   }
 }
-
-const CancelIcon = styled(Icon)`
-  margin-left: 5px !important;
-`;
 
 export default TaskEdit;
