@@ -5,15 +5,15 @@ import * as _ from 'lodash';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'mobx-react-router';
-import { Field, Form as FinalForm } from 'react-final-form';
+import { Form as FinalForm } from 'react-final-form';
 import { RouteComponentProps } from 'react-router';
-import { Button, Form, Icon, Modal, TextArea } from 'semantic-ui-react';
-import styled from 'styled-components';
+import { Form, Modal } from 'semantic-ui-react';
 
 import { ITask } from 'Models/Task';
 import { ITaskEditFormFields, ITaskStore } from 'Stores/TaskStore';
 import { normalizeFFValues } from 'Utils/index';
 import Description from './Description';
+import Title from './Title';
 
 export interface IProps extends ITask {
   trigger: React.ReactNode;
@@ -60,24 +60,26 @@ class TaskEdit extends React.Component<
     return (
       <FinalForm
         onSubmit={this.handleSubmit(id)}
-        initialValues={{ description }}
+        initialValues={{ name, description }}
         render={({ handleSubmit, values, form }) => (
-          <Modal
-            centered={false}
-            open={editingModalOpened}
-            onClose={this.toggleModal(form.reset, false)}
-          >
-            <Modal.Header>{name}</Modal.Header>
+          <Form onSubmit={handleSubmit}>
+            <Modal
+              open={editingModalOpened}
+              onClose={this.toggleModal(form.reset, false)}
+              centered={false}
+            >
+              <Title name={name} form={form} />
 
-            <Modal.Content>
-              <Description
-                currentTask={this.currentTask}
-                values={values as { description: string }}
-                form={form}
-                handleSubmit={handleSubmit}
-              />
-            </Modal.Content>
-          </Modal>
+              <Modal.Content>
+                <Description
+                  currentTask={this.currentTask}
+                  values={values as ITaskEditFormFields}
+                  form={form}
+                  handleSubmit={handleSubmit}
+                />
+              </Modal.Content>
+            </Modal>
+          </Form>
         )}
       />
     );

@@ -9,6 +9,7 @@ export interface IAddTaskFormFields {
 }
 
 export interface ITaskEditFormFields {
+  name: string;
   description: string;
 }
 

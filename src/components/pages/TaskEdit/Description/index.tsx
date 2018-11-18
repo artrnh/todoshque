@@ -63,7 +63,7 @@ class Description extends React.Component<IProps> {
   );
 
   private renderTextArea = () => (
-    <Form onSubmit={this.props.handleSubmit}>
+    <Form>
       <Field
         name="description"
         render={({ input }) => (
