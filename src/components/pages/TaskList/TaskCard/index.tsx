@@ -3,6 +3,7 @@ import * as React from 'react';
 import { action, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'mobx-react-router';
+import * as Markdown from 'react-markdown';
 import { Button, ButtonProps, Card, Icon, Label } from 'semantic-ui-react';
 const { Content, Header, Meta, Description } = Card;
 import styled from 'styled-components';
@@ -119,9 +120,13 @@ TaskCard.Description = ({
   if (!description) return null;
 
   return completed ? (
-    <CompletedDescription>{description}</CompletedDescription>
+    <CompletedDescription>
+      <Markdown source={description} />
+    </CompletedDescription>
   ) : (
-    <Description>{description}</Description>
+    <Description>
+      <Markdown source={description} />
+    </Description>
   );
 };
 

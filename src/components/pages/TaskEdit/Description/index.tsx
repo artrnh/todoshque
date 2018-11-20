@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Field, FormProps } from 'react-final-form';
+import * as Markdown from 'react-markdown';
 import styled from 'styled-components';
 
 import {
@@ -57,8 +58,12 @@ class Description extends React.Component<IProps> {
       onMouseOut={this.toggleHovered}
       onClick={this.toggleEditing}
     >
-      {this.props.currentTask.description ||
-        'Add a more detailed description...'}
+      <Markdown
+        source={
+          this.props.currentTask.description ||
+          'Add a more detailed description...'
+        }
+      />
     </DescriptionText>
   );
 
