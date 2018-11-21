@@ -2,9 +2,11 @@ import * as React from 'react';
 
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
+import { Route } from 'react-router-dom';
 import { Card, Loader, Message } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+import TaskEdit from 'Pages/TaskEdit';
 import { ITaskStore } from 'Stores/TaskStore';
 import AddTask from './AddTask';
 import Filters from './Filters';
@@ -49,6 +51,7 @@ class TaskList extends React.Component<IProps & RouteComponentProps<{}>> {
         <AddTask />
         <TaskList.Header isEmpty={this.props.tasks.isEmpty} />
         {this.renderTasks()}
+        <Route path="/tasks/:id" component={TaskEdit} />
       </>
     );
   }
